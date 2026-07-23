@@ -235,150 +235,60 @@ async function startCleaning(filterUnreplied) {
 
 
 
-window.addEventListener('load', async () => {
-  await sleep(3000);
-  createFloatingPanel();
-});
-
-
-
-
 function createFloatingPanel() {
   if (document.getElementById('wa-helper-panel')) return;
 
   const panel = document.createElement('div');
   panel.id = 'wa-helper-panel';
-
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes waSlideIn {
-      from { opacity: 0; transform: translateX(40px) scale(0.95); }
-      to { opacity: 1; transform: translateX(0) scale(1); }
-    }
-    @keyframes waGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(37,211,102,0.15); }
-      50% { box-shadow: 0 0 30px rgba(37,211,102,0.3); }
-    }
-    #wa-header {
-      background: linear-gradient(135deg, #075e54, #128c7e);
-      color: white;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: move;
-      user-select: none;
-      border-radius: 14px 14px 0 0;
-    }
-    #wa-header .wa-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-    #wa-header .wa-brand .wa-logo {
-      width: 22px;
-      height: 22px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-    }
-    #wa-header .wa-controls {
-      display: flex;
-      gap: 6px;
-    }
-    #wa-header .wa-controls button {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: white;
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    #wa-header .wa-controls button:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.1);
-    }
-  `;
-  document.head.appendChild(style);
-
+  panel.style.cssText = 'position:fixed;top:10px;right:0px;width:420px;height:420px;min-height:420px;z-index:999999;background:white;border-radius:8px 0 0 8px;box-shadow:0 2px 12px rgba(0,0,0,.25);overflow:hidden;';
   panel.innerHTML = `
-<div id="wa-header">
-  <div class="wa-brand">
-    <span class="wa-logo">🧹</span>
-    Archive Cleaner
-  </div>
-  <div class="wa-controls">
-    <button id="wa-min" title="Minimize">─</button>
-    <button id="wa-max" title="Maximize">▢</button>
-  </div>
+<div style="position:absolute;top:0;right:0;z-index:10;">
+  <button id="wa-min" style="width:36px;height:28px;border:none;background:rgba(0,0,0,.06);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#555;transition:background .15s;border-radius:0 8px 0 8px;" title="Minimize" onmouseover="this.style.background='rgba(0,0,0,.12)'" onmouseout="this.style.background='rgba(0,0,0,.06)'">\u2014</button>
 </div>
-<iframe
-  src="${chrome.runtime.getURL('popup.html')}"
-  style="
-    width: 100%;
-    height: calc(100% - 46px);
-    border: none;
-    border-radius: 0 0 14px 14px;
-  ">
-</iframe>
-`;
-
-  panel.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 380px;
-    height: 540px;
-    z-index: 999999;
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
-    resize: both;
-    overflow: hidden;
-    animation: waSlideIn 0.4s ease, waGlow 3s ease-in-out infinite;
-    border: 1px solid rgba(255,255,255,0.1);
-  `;
-
+<iframe id="wa-frame" src="${chrome.runtime.getURL('popup.html')}" style="width:100%;height:100%;border:none;border-radius:8px;" scrolling="auto"></iframe>`;
   document.body.appendChild(panel);
-  const iframe = panel.querySelector('iframe');
 
-  document.getElementById('wa-min').onclick = () => {
-    if (iframe.style.display === 'none') {
-      iframe.style.display = 'block';
-      panel.style.height = '540px';
-    } else {
-      iframe.style.display = 'none';
-      panel.style.height = '46px';
-    }
+  let minimized = false;
+  const frame = document.getElementById('wa-frame');
+  const minBtn = document.getElementById('wa-min');
+
+  function toggleMin() {
+    minimized = !minimized;
+    frame.style.display = minimized ? 'none' : 'block';
+    panel.style.height = minimized ? '3px' : '420px';
+    panel.style.minHeight = minimized ? '3px' : '420px';
+    panel.style.overflow = minimized ? 'visible' : 'hidden';
+    panel.style.cursor = minimized ? 'pointer' : 'default';
+    panel.style.background = minimized ? 'transparent' : 'white';
+    panel.style.boxShadow = minimized ? 'none' : '0 2px 12px rgba(0,0,0,.25)';
+    panel.style.borderRadius = minimized ? '0' : '8px 0 0 8px';
+    panel.style.borderTop = minimized ? '3px solid #25D366' : 'none';
+    panel.style.minWidth = minimized ? '40px' : '420px';
+    panel.style.width = minimized ? '40px' : '420px';
+    panel.style.right = minimized ? 'auto' : '0px';
+    panel.style.left = minimized ? 'calc(50% + 60px)' : 'auto';
+    panel.style.transform = minimized ? 'translateX(-50%)' : 'none';
+    panel.style.top = '10px';
+    minBtn.parentElement.style.right = '0';
+    minBtn.parentElement.style.left = 'auto';
+    minBtn.style.borderRadius = '0 8px 0 8px';
+    minBtn.textContent = minimized ? '+' : '\u2014';
+    minBtn.style.fontSize = minimized ? '18px' : '16px';
+    minBtn.style.fontWeight = minimized ? 'bold' : 'normal';
+  }
+
+  document.getElementById('wa-min').onclick = (e) => {
+    e.stopPropagation();
+    toggleMin();
   };
 
-  let maximized = false;
-
-  document.getElementById('wa-max').onclick = () => {
-    if (!maximized) {
-      panel.style.width = '520px';
-      panel.style.height = '85vh';
-      panel.style.top = '10px';
-      panel.style.right = '10px';
-      maximized = true;
-    } else {
-      panel.style.width = '380px';
-      panel.style.height = '540px';
-      panel.style.top = '20px';
-      panel.style.right = '20px';
-      maximized = false;
-    }
+  panel.onclick = () => {
+    if (minimized) toggleMin();
   };
+}
+
+if (document.readyState === 'complete') {
+  setTimeout(createFloatingPanel, 3000);
+} else {
+  window.addEventListener('load', () => setTimeout(createFloatingPanel, 3000));
 }

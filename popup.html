@@ -11,11 +11,16 @@
       box-sizing: border-box;
     }
 
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #a5d6a7; border-radius: 4px; }
+
     body {
-      width: 380px;
-      min-height: 500px;
+      width: 420px;
+      height: 420px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
       background: linear-gradient(145deg, #e8f5e9 0%, #f1f8e9 50%, #e0f2f1 100%);
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .container {
@@ -556,6 +561,108 @@
     #error-log::-webkit-scrollbar { width: 3px; }
     #error-log::-webkit-scrollbar-thumb { background: #ef9a9a; border-radius: 2px; }
 
+    /* ===== CRM LABELS ===== */
+    .crm-section {
+      margin-bottom: 12px;
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .crm-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #075e54;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .crm-inline-wrap {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+
+    .crm-inline-wrap::-webkit-scrollbar { height: 3px; }
+    .crm-inline-wrap::-webkit-scrollbar-thumb { background: #c8e6c9; border-radius: 3px; }
+
+    .crm-inline-cat, .crm-inline-btn {
+      padding: 5px 10px;
+      border: 1px solid #c8e6c9;
+      border-radius: 14px;
+      background: #f1f8e9;
+      font-size: 11px;
+      font-weight: 600;
+      color: #075e54;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .crm-inline-cat:hover, .crm-inline-btn:hover {
+      border-color: #25d366;
+      color: #128c7e;
+      background: #e8f5e9;
+      transform: translateY(-1px);
+    }
+
+    .crm-inline-cat.active, .crm-inline-btn.label-selected {
+      border-color: #128c7e;
+      background: #128c7e;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(18, 140, 126, 0.3);
+    }
+
+    .crm-inline-popup {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      z-index: 999999;
+      max-height: 220px;
+      overflow-y: auto;
+      display: none;
+      padding: 8px;
+    }
+
+    .crm-popup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .crm-btn {
+      padding: 7px 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fafafa;
+      font-size: 11px;
+      font-weight: 500;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .crm-btn:hover {
+      border-color: #25d366;
+      color: #075e54;
+      background: #e8f5e9;
+    }
+
+    .crm-btn.label-selected {
+      border-color: #128c7e;
+      background: #128c7e;
+      color: #fff;
+    }
+
     /* ===== FOOTER ===== */
     .footer {
       text-align: center;
@@ -610,6 +717,14 @@
       </button>
     </div>
 
+    <!-- CRM LABELS -->
+    <div class="crm-section">
+      <div class="crm-section-label">CRM Labels</div>
+      <div class="crm-inline-wrap">
+        <div class="crm-inline" id="crm-inline"></div>
+      </div>
+    </div>
+
     <!-- STATS -->
     <div class="stats-row">
       <div class="stat-item">
@@ -631,5 +746,6 @@
     </div>
   </div>
   <script src="popup.js"></script>
+  <script src="crm-actions.js"></script>
 </body>
 </html>
