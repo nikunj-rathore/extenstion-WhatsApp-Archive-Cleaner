@@ -240,7 +240,7 @@ function createFloatingPanel() {
 
   const panel = document.createElement('div');
   panel.id = 'wa-helper-panel';
-  panel.style.cssText = 'position:fixed;top:10px;right:0px;width:420px;height:420px;min-height:420px;z-index:999999;background:white;border-radius:8px 0 0 8px;box-shadow:0 2px 12px rgba(0,0,0,.25);overflow:hidden;';
+  panel.style.cssText = 'position:fixed;top:10px;right:0px;width:360px;height:330px;min-height:330px;z-index:999999;background:white;border-radius:8px 0 0 8px;box-shadow:0 2px 12px rgba(0,0,0,.25);overflow:hidden;';
   panel.innerHTML = `
 <div style="position:absolute;top:0;right:0;z-index:10;">
   <button id="wa-min" style="width:36px;height:28px;border:none;background:rgba(0,0,0,.06);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#555;transition:background .15s;border-radius:0 8px 0 8px;" title="Minimize" onmouseover="this.style.background='rgba(0,0,0,.12)'" onmouseout="this.style.background='rgba(0,0,0,.06)'">\u2014</button>
@@ -255,16 +255,16 @@ function createFloatingPanel() {
   function toggleMin() {
     minimized = !minimized;
     frame.style.display = minimized ? 'none' : 'block';
-    panel.style.height = minimized ? '3px' : '420px';
-    panel.style.minHeight = minimized ? '3px' : '420px';
+    panel.style.height = minimized ? '3px' : '330px';
+    panel.style.minHeight = minimized ? '3px' : '330px';
     panel.style.overflow = minimized ? 'visible' : 'hidden';
     panel.style.cursor = minimized ? 'pointer' : 'default';
     panel.style.background = minimized ? 'transparent' : 'white';
     panel.style.boxShadow = minimized ? 'none' : '0 2px 12px rgba(0,0,0,.25)';
     panel.style.borderRadius = minimized ? '0' : '8px 0 0 8px';
     panel.style.borderTop = minimized ? '3px solid #25D366' : 'none';
-    panel.style.minWidth = minimized ? '40px' : '420px';
-    panel.style.width = minimized ? '40px' : '420px';
+    panel.style.minWidth = minimized ? '40px' : '360px';
+    panel.style.width = minimized ? '40px' : '360px';
     panel.style.right = minimized ? 'auto' : '0px';
     panel.style.left = minimized ? 'calc(50% + 60px)' : 'auto';
     panel.style.transform = minimized ? 'translateX(-50%)' : 'none';
