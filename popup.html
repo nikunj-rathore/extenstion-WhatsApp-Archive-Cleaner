@@ -23,104 +23,206 @@
       overflow-y: auto;
     }
 
-    .container {
-      padding: 16px;
+    .content {
+      padding: 10px 14px;
     }
 
     /* ===== HEADER ===== */
     .header {
       background: linear-gradient(135deg, #075e54 0%, #128c7e 50%, #25d366 100%);
-      margin: -16px -16px 14px -16px;
-      padding: 18px 16px 14px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 160px;
-      height: 160px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 50%;
-    }
-
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -40%;
-      left: -15%;
-      width: 120px;
-      height: 120px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 50%;
-    }
-
-    .header-top {
+      padding: 8px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-      position: relative;
-      z-index: 1;
+      gap: 8px;
     }
 
     .header-icon {
-      width: 40px;
-      height: 40px;
+      width: 26px;
+      height: 26px;
       background: rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 14px;
       backdrop-filter: blur(4px);
-      animation: float 3s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
+    .header-text {
+      flex: 1;
+      min-width: 0;
     }
 
-    .header-text h1 {
+    .header-title {
       color: #fff;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: -0.2px;
     }
 
-    .header-text .sub {
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 11px;
+    .header-sub {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 9px;
       font-weight: 400;
     }
 
     .header-badge {
-      position: absolute;
-      top: 12px;
-      right: 14px;
       background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      font-size: 9px;
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 8px;
+      font-size: 8px;
+      color: #fff;
       font-weight: 600;
-      letter-spacing: 0.3px;
-      z-index: 1;
+      flex-shrink: 0;
     }
 
-    .header .brand {
-      position: absolute;
-      bottom: 4px;
-      right: 14px;
-      color: rgba(255, 255, 255, 0.15);
+    /* ── Login Button ── */
+    .wa-login-btn {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 3px 8px;
       font-size: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s;
+      margin-left: 4px;
+      flex-shrink: 0;
+    }
+    .wa-login-btn:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .wa-login-btn.logged-in {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    /* ── Signed-in Card ── */
+    .crm-signed-in-card {
+      background: linear-gradient(135deg, rgba(7,94,84,0.1), rgba(37,211,102,0.1));
+      border: 1px solid rgba(37,211,102,0.25);
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin: 8px 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .crm-signed-in-card .crm-user-email {
+      font-size: 10px;
+      font-weight: 600;
+      color: #075e54;
+    }
+    .crm-signed-in-card .crm-signout-link {
+      font-size: 10px;
+      color: #ed4956;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .crm-signed-in-card .crm-signout-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ── CRM Modal ── */
+    .crm-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 99999;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .crm-modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 300px;
+      max-width: 90%;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    .crm-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px 0;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      z-index: 1;
+      color: #262626;
+    }
+    .crm-modal-close {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #8e8e8e;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .crm-modal-close:hover { color: #333; }
+    .crm-modal-body {
+      padding: 12px 14px 16px;
+    }
+    .crm-modal-body label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #262626;
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+    .crm-modal-body label:first-child { margin-top: 0; }
+    .crm-modal-body input[type="email"] {
+      width: 100%;
+      padding: 7px 9px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      font-size: 11px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .crm-modal-body input:focus {
+      border-color: #25d366;
+    }
+    .crm-modal-body .crm-submit-btn {
+      width: 100%;
+      padding: 8px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #075e54, #128c7e);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .crm-modal-body .crm-submit-btn:hover { opacity: 0.9; }
+    .crm-modal-body .crm-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .crm-modal-body .crm-toggle-link {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 10px;
+      color: #8e8e8e;
+    }
+    .crm-modal-body .crm-toggle-link a {
+      color: #128c7e;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .crm-error {
+      margin-top: 8px;
+      font-size: 10px;
+      color: #ed4956;
+      display: none;
     }
 
     /* ===== STATUS ===== */
@@ -563,98 +665,103 @@
 
     /* ===== CRM LABELS ===== */
     .crm-section {
-      margin-bottom: 12px;
-      background: #fff;
-      padding: 10px 12px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      margin-bottom: 8px;
     }
 
     .crm-section-label {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
-      color: #075e54;
+      color: #8e8e8e;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .crm-inline-wrap {
       display: flex;
       flex-wrap: nowrap;
-      gap: 6px;
+      gap: 4px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
+      width: 100%;
     }
 
-    .crm-inline-wrap::-webkit-scrollbar { height: 3px; }
-    .crm-inline-wrap::-webkit-scrollbar-thumb { background: #c8e6c9; border-radius: 3px; }
+    .crm-inline-wrap::-webkit-scrollbar { height: 0; display: none; }
+
+    .crm-inline {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 4px !important;
+      align-items: center !important;
+      white-space: nowrap !important;
+    }
 
     .crm-inline-cat, .crm-inline-btn {
-      padding: 5px 10px;
-      border: 1px solid #c8e6c9;
+      padding: 4px 8px;
+      border: 1px solid #dbdbdb;
       border-radius: 14px;
-      background: #f1f8e9;
-      font-size: 11px;
+      background: #fff;
+      font-size: 9px;
       font-weight: 600;
-      color: #075e54;
+      color: #262626;
       cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      flex-shrink: 0;
+      transition: all 0.15s;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center;
     }
 
     .crm-inline-cat:hover, .crm-inline-btn:hover {
       border-color: #25d366;
-      color: #128c7e;
-      background: #e8f5e9;
-      transform: translateY(-1px);
+      color: #075e54;
+      background: #f1f8e9;
     }
 
     .crm-inline-cat.active, .crm-inline-btn.label-selected {
       border-color: #128c7e;
       background: #128c7e;
       color: #fff;
-      box-shadow: 0 2px 8px rgba(18, 140, 126, 0.3);
+      box-shadow: 0 0 6px rgba(18, 140, 126, 0.3);
     }
 
     .crm-inline-popup {
       position: fixed;
       background: #fff;
-      border: 1px solid #c8e6c9;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
       z-index: 999999;
-      max-height: 220px;
+      max-height: 200px;
       overflow-y: auto;
       display: none;
-      padding: 8px;
+      padding: 6px;
     }
 
     .crm-popup-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 4px;
     }
 
     .crm-btn {
-      padding: 7px 10px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      background: #fafafa;
-      font-size: 11px;
+      padding: 6px 8px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 10px;
       font-weight: 500;
-      color: #333;
+      color: #262626;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s;
       text-align: left;
     }
 
     .crm-btn:hover {
       border-color: #25d366;
       color: #075e54;
-      background: #e8f5e9;
+      background: #f1f8e9;
     }
 
     .crm-btn.label-selected {
@@ -680,20 +787,22 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- HEADER -->
-    <div class="header">
-      <div class="header-top">
-        <div class="header-icon">🧹</div>
-        <div class="header-text">
-          <h1>Archive Cleaner</h1>
-          <div class="sub">by <strong>InGage</strong> — Clear archived chats instantly</div>
-        </div>
-      </div>
-      <div class="header-badge">PRO</div>
-      <div class="brand">INGAGE</div>
+  <div class="header">
+    <div class="header-icon">🧹</div>
+    <div class="header-text">
+      <div class="header-title">WhatsApp Tools by InGage</div>
+      <div class="header-sub">WhatsApp Archive Cleaner</div>
     </div>
+    <div class="header-badge">v1.0</div>
+    <button id="crm-login-btn" class="wa-login-btn" type="button">Login</button>
+  </div>
 
+  <div id="crm-signed-in-card" class="crm-signed-in-card" style="display:none;">
+    <span class="crm-user-email" id="crm-user-email-display"></span>
+    <span class="crm-signout-link" id="crm-signout-link">Sign Out</span>
+  </div>
+
+  <div class="content">
     <!-- PROGRESS -->
     <div class="progress-section" id="progressSection">
       <div class="progress-header">
@@ -747,5 +856,33 @@
   </div>
   <script src="popup.js"></script>
   <script src="crm-actions.js"></script>
+  <script src="crm-auth.js"></script>
+
+  <!-- LOGIN MODAL -->
+  <div id="crm-modal-overlay" class="crm-modal-overlay" style="display:none;">
+    <div class="crm-modal">
+      <div class="crm-modal-header">
+        <span>InGage CRM Login</span>
+        <button id="crm-modal-close" class="crm-modal-close">&times;</button>
+      </div>
+      <div class="crm-modal-body">
+        <div id="crm-signin-mode">
+          <label>Email address</label>
+          <input type="email" id="crm-email" placeholder="user@company.com" />
+          <button id="crm-signin-btn" class="crm-submit-btn">Sign in</button>
+          <div class="crm-toggle-link">Don't have an account? <a href="#" id="crm-switch-to-signup">Create account</a></div>
+        </div>
+
+        <div id="crm-signup-mode" style="display:none;">
+          <label>Email address</label>
+          <input type="email" id="crm-signup-email" placeholder="user@company.com" />
+          <button id="crm-signup-btn" class="crm-submit-btn">Create Account</button>
+          <div class="crm-toggle-link">Already have an account? <a href="#" id="crm-switch-to-signin">Sign in</a></div>
+        </div>
+
+        <div id="crm-error" class="crm-error"></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
