@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InGage - WhatsApp Archive Cleaner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(145deg, #e8f5e9 0%, #f1f8e9 50%, #e0f2f1 100%);
+    }
+
+    .container {
+      padding: 16px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #075e54 0%, #128c7e 50%, #25d366 100%);
+      margin: -16px -16px 14px -16px;
+      padding: 18px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 160px;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40%;
+      left: -15%;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50%;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      backdrop-filter: blur(4px);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .header-text h1 {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .header-text .sub {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .header-badge {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      z-index: 1;
+    }
+
+    .header .brand {
+      position: absolute;
+      bottom: 4px;
+      right: 14px;
+      color: rgba(255, 255, 255, 0.15);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      z-index: 1;
+    }
+
+    /* ===== STATUS ===== */
+    .status-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: background 0.3s ease;
+    }
+
+    .status-dot.idle { background: #bdbdbd; }
+    .status-dot.active { background: #25d366; animation: pulse 1.2s ease-in-out infinite; }
+    .status-dot.error { background: #ef5350; }
+    .status-dot.done { background: #66bb6a; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    #status {
+      font-size: 12px;
+      color: #555;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    /* ===== PROGRESS ===== */
+    .progress-section {
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .progress-section.visible {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .progress-header span {
+      font-size: 11px;
+      color: #888;
+    }
+
+    .progress-header .progress-count {
+      font-weight: 700;
+      color: #075e54;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 5px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #25d366, #128c7e);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    /* ===== FILTER TOGGLE ===== */
+    .filter-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 12px;
+    }
+
+    .filter-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .filter-label .fi { font-size: 14px; }
+
+    .toggle {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle.on {
+      background: #25d366;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle.on::after {
+      transform: translateX(16px);
+    }
+
+    .filter-hint {
+      font-size: 10px;
+      color: #999;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .filter-hint.visible {
+      display: block;
+    }
+
+    /* ===== CLEANER CARD ===== */
+    .card-cleaner {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      margin-bottom: 12px;
+    }
+
+    .card-cleaner .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-cleaner .top .title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 11px 16px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: rippleAnim 0.6s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    .btn-primary .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn-primary.loading .spinner { display: block; }
+    .btn-primary.loading .btn-text { display: none; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== STATS ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .stat-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      border-color: #25d366;
+      background: #f1fdf4;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #075e54;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #999;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ===== ACTIONS SECTION ===== */
+    .actions-section {
+      margin-bottom: 10px;
+    }
+
+    .actions-section .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #075e54;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .actions-section .section-title .count {
+      font-size: 10px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 0 6px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .accordion {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .accordion-header:hover {
+      background: #f9fafb;
+    }
+
+    .accordion-header .ah-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .accordion-header .ah-left .ah-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .accordion-header .arrow {
+      font-size: 12px;
+      color: #bbb;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion.open .accordion-header .arrow {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion.open .accordion-body {
+      max-height: 600px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 2px 10px 10px;
+    }
+
+    .action-btn {
+      padding: 7px 8px;
+      background: #f9fafb;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .action-btn:hover {
+      background: #e8f5e9;
+      border-color: #25d366;
+      color: #075e54;
+      transform: translateY(-1px);
+    }
+
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-btn .ab-icon {
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* category icon colors */
+    .ic-assign { background: #e3f2fd; }
+    .ic-pipe { background: #fce4ec; }
+    .ic-follow { background: #fff3e0; }
+    .ic-contact { background: #e8f5e9; }
+    .ic-ai { background: #f3e5f5; }
+    .ic-doc { background: #e0f7fa; }
+    .ic-task { background: #f5f5f5; }
+
+    /* ===== ERROR LOG ===== */
+    #error-log {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #c62828;
+      background: #ffebee;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: none;
+      max-height: 60px;
+      overflow-y: auto;
+      border: 1px solid #ffcdd2;
+      line-height: 1.4;
+    }
+
+    #error-log.visible {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    #error-log::-webkit-scrollbar { width: 3px; }
+    #error-log::-webkit-scrollbar-thumb { background: #ef9a9a; border-radius: 2px; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .footer span {
+      font-size: 9px;
+      color: #aaa;
+      letter-spacing: 0.3px;
+    }
+
+    .footer span .hl { color: #25d366; font-weight: 600; }
+    .footer span .hl2 { color: #128c7e; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-top">
+        <div class="header-icon">🧹</div>
+        <div class="header-text">
+          <h1>Archive Cleaner</h1>
+          <div class="sub">by <strong>InGage</strong> — Clear archived chats instantly</div>
+        </div>
+      </div>
+      <div class="header-badge">PRO</div>
+      <div class="brand">INGAGE</div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section" id="progressSection">
+      <div class="progress-header">
+        <span>Cleaning progress</span>
+        <span class="progress-count" id="progressCount">0 / 0</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- CLEANER -->
+    <div class="card-cleaner">
+      <div class="top">
+        <div class="title">⚡ Quick Clean</div>
+        <span style="font-size:10px;color:#999;" id="statCleaned">0 cleaned</span>
+      </div>
+      <button class="btn-primary" id="start-btn">
+        <span class="spinner"></span>
+        <span class="btn-text">🧹  Clear Archived Chats</span>
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value" id="statCleanedNum">0</div>
+        <div class="stat-label">Chats Cleaned</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statStatus">—</div>
+        <div class="stat-label">Status</div>
+      </div>
+    </div>
+
+    <!-- ERROR LOG -->
+    <div id="error-log"></div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <span>WhatsApp Archive Cleaner by <span class="hl2">In</span><span class="hl">Gage</span> · v1.0</span>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

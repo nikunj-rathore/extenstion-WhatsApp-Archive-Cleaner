@@ -1,0 +1,83 @@
+========================================
+  EXTENSION: WhatsApp Archive Cleaner
+========================================
+
+Name: WhatsApp Archive Cleaner
+Version: 1.0
+Manifest Version: 3
+Type: Chrome Extension
+Language: JavaScript (Vanilla)
+Size: ~50KB
+
+----------------------------------------
+DESCRIPTION
+----------------------------------------
+A lightweight Chrome extension that automatically clears all archived chats in WhatsApp Web with a single click. It navigates to the Archived folder, opens each chat, and clears the messages — saving you hours of manual work.
+
+----------------------------------------
+FEATURES
+----------------------------------------
+1. One-click "Clear Archived Chats" button
+2. Automatically opens each archived chat
+3. Clicks the 3-dot menu → selects "Delete Chat"
+4. Confirms the deletion in the modal popup
+5. Processes all archived chats sequentially
+6. Real-time status updates in the popup
+7. Error logging for each step
+8. Floating "WA Helper" panel on WhatsApp Web for easy access
+9. Supports minimize and maximize options
+10. WhatsApp Web native green theme UI
+
+----------------------------------------
+FILES INCLUDED
+----------------------------------------
+- manifest.json    : Extension configuration (Manifest V3)
+- content.js       : Core cleaning logic + floating panel
+- popup.html       : Popup UI with Clear Archived Chats button
+- popup.js         : Popup logic to communicate with content script
+- icon128.png      : Extension icon (128x128)
+
+----------------------------------------
+HOW TO INSTALL (Developer Mode)
+----------------------------------------
+1. Open Chrome → go to chrome://extensions/
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked"
+4. Select this extension folder
+5. Go to web.whatsapp.com
+6. Click the extension icon → click "Clear Archived Chats"
+
+----------------------------------------
+HOW TO UPLOAD TO CHROME WEB STORE
+----------------------------------------
+1. Go to https://chrome.google.com/webstore/devconsole
+2. Sign in with your Developer account
+3. Click "New item"
+4. Upload the ZIP file: WhatsApp-Archive-Cleaner.zip
+5. Fill in:
+   - Store icon: icon128.png
+   - Description: Paste from this file
+   - Screenshots: (Take screenshots of popup + WhatsApp Web)
+   - Privacy Policy: Refer to privacy-policy.txt
+6. Set permissions justification:
+   - "activeTab" → To interact with WhatsApp Web
+   - "scripting" → To inject cleaning script
+   - "web.whatsapp.com" → Required for functionality
+7. Submit for review (takes 1-3 days)
+
+----------------------------------------
+PERMISSIONS REQUIRED
+----------------------------------------
+- activeTab       : Access the active WhatsApp Web tab
+- scripting       : Inject content script for automation
+- notifications   : Optional notifications
+- storage         : Future use (settings storage)
+- Host: web.whatsapp.com
+
+----------------------------------------
+NOTES
+----------------------------------------
+- The extension uses a floating panel that appears after 3 seconds on web.whatsapp.com
+- The panel embeds the popup UI directly on the page for convenience
+- Tested on WhatsApp Web latest version
+- Manifest V3 compliant

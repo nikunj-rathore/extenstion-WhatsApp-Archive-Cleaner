@@ -1,0 +1,42 @@
+========================================
+  PRIVACY POLICY
+  WhatsApp Archive Cleaner v1.0
+========================================
+
+Last Updated: June 2026
+
+1. DATA COLLECTION
+-------------------
+This extension does NOT collect, store, transmit, or share any personal data, chat messages, or user information. All operations are performed entirely within the user's browser on WhatsApp Web.
+
+2. DATA USAGE
+-------------------
+- The extension only accesses WhatsApp Web's DOM elements to automate clicking of UI elements (Archive folder, menu buttons, clear chat options).
+- No chat content, messages, media, or contact information is ever read, stored, or transmitted.
+- No data is sent to any external server or third party.
+
+3. PERMISSIONS JUSTIFICATION
+-----------------------------
+- "activeTab"     : Required to interact with the currently active WhatsApp Web tab.
+- "scripting"     : Required to inject the content script that performs automated cleaning.
+- "notifications" : Used only to show completion/error notifications (optional).
+- "storage"       : Reserved for future user preferences (no data stored currently).
+- Host permission for web.whatsapp.com : Required to run the extension on WhatsApp Web.
+
+4. THIRD-PARTY SERVICES
+-------------------------
+This extension does not use any third-party analytics, tracking, or advertising services.
+
+5. DATA RETENTION & DELETION
+-----------------------------
+Since no data is collected, there is nothing to retain or delete.
+
+6. CONTACT
+-----------
+If you have any questions about this privacy policy, please contact the extension developer.
+
+7. CHANGES TO THIS POLICY
+---------------------------
+Any changes to this policy will be updated here with a revised "Last Updated" date.
+
+© 2026 WhatsApp Archive Cleaner

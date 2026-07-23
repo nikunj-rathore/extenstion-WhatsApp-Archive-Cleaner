@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "WhatsApp Archive Cleaner",
+  "version": "1.0",
+  "description": "Clears all archived chats in WhatsApp Web.",
+  "permissions": ["activeTab", "scripting", "notifications", "storage"],
+  "host_permissions": ["https://web.whatsapp.com/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  
+  "web_accessible_resources": [
+  {
+    "resources": ["popup.html", "popup.js"],
+    "matches": ["https://web.whatsapp.com/*"]
+  }
+]
+  
+}
